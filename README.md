@@ -4,7 +4,7 @@
 
 ✨ Um mini site interativo criado para presentear clientes da **Thau Luna Acessórios** com uma experiência delicada, personalizada e encantadora.
 
-[🌐 Ver Projeto](https://thauanneluna.github.io/Mimo/)
+[🌐 Ver Projeto](https://thauanneluna.github.io/Mimo/?nome=)
 ·
 [🛍️ Loja Oficial](https://thau-luna-acessorios.stoqui.shop)
 ·
