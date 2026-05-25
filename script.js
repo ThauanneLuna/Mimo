@@ -26,6 +26,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.getElementById('display-name').textContent = clientName;
 
+  /* mensagem personalizada */
+  const birthdayMessage = document.getElementById('birthday-message');
+
+  if (birthdayMessage) {
+    birthdayMessage.innerHTML = `
+      Parabéns, ${clientName} 🤍<br><br>
+
+      Que teu novo ciclo venha leve,
+      bonito e cheio de coisas boas.<br><br>
+
+      Você merece viver momentos que façam
+      seu coração sorrir de verdade ✨
+    `;
+  }
+
   setWhatsAppLink();
   initConfetti();
   initSplash();
@@ -63,7 +78,7 @@ function closeSplash(splash) {
   splash.classList.add('hiding');
   setTimeout(() => {
     splash.style.display = 'none';
-    showScene('step-1');       /* ← garante que o passo 1 aparece */
+    showScene('step-1');
   }, 500);
 }
 
@@ -71,7 +86,7 @@ function closeSplash(splash) {
 /* ── Polaroid ────────────────────────────────────────────── */
 
 function initPolaroid() {
-  const foto    = new URLSearchParams(window.location.search).get("foto");
+  const foto     = new URLSearchParams(window.location.search).get("foto");
   const polaroid = document.getElementById("polaroid");
   const img      = document.getElementById("client-photo");
 
@@ -89,36 +104,46 @@ function showScene(id) {
     s.classList.remove('active');
     s.style.display = 'none';
   });
+
   const el = document.getElementById(id);
+
   el.style.display = 'flex';
-  void el.offsetWidth; /* força reflow para re-disparar animação */
+
+  void el.offsetWidth;
+
   el.classList.add('active');
 }
 
 function goStep2() {
   const btn       = document.getElementById('btn-step1');
+
   btn.textContent = 'Um momento…';
   btn.disabled    = true;
+
   setTimeout(() => showScene('step-2'), 360);
 }
 
 function goStep3() {
   const btn       = document.getElementById('btn-step2');
+
   btn.textContent = 'Abrindo…';
   btn.disabled    = true;
+
   setTimeout(() => showScene('step-3'), 360);
 }
 
 
-/* ── Revelar cupom ──────────────────────────────────────────── */
+/* ── Revelar mensagem ───────────────────────────────────────── */
 
 let revealed = false;
 
 function revealCupom() {
   if (revealed) return;
+
   revealed = true;
 
   const gift = document.getElementById('gift-emoji');
+
   gift.classList.add('exploded');
   gift.style.cursor = 'default';
 
@@ -136,60 +161,41 @@ function revealCupom() {
 }
 
 
-/* ── Copiar cupom ───────────────────────────────────────────── */
-
-function copyCupom() {
-  const code     = 'MimoNiver';
-  const btn      = document.getElementById('btn-copy');
-  const feedback = document.getElementById('copy-feedback');
-
-  navigator.clipboard.writeText(code)
-    .then(() => flashCopied(btn, feedback))
-    .catch(() => {
-      const ta         = document.createElement('textarea');
-      ta.value         = code;
-      ta.style.cssText = 'position:fixed;opacity:0;pointer-events:none;';
-      document.body.appendChild(ta);
-      ta.select();
-      try { document.execCommand('copy'); flashCopied(btn, feedback); } catch (_) {}
-      document.body.removeChild(ta);
-    });
-}
-
-function flashCopied(btn, feedback) {
-  btn.textContent = 'Copiado';
-  feedback.classList.add('show');
-  setTimeout(() => {
-    btn.textContent = 'Copiar';
-    feedback.classList.remove('show');
-  }, 2500);
-}
-
-
 /* ── WhatsApp ───────────────────────────────────────────────── */
 
 function setWhatsAppLink() {
   const btn = document.getElementById('btn-whatsapp');
+
   if (!btn) return;
 
   const phone = '5585987511775';
-  const text  = `Oi! Sou ${clientName}.\nPeguei meu cupom de aniversário: MimoNiver\nQuero usar agora!`;
-  btn.href    = `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
+
+  const text = `
+Oi! Sou ${clientName} 🤍
+Recebi a mensagem de aniversário da Thau Luna ✨
+  `.trim();
+
+  btn.href = `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
 }
 
 
 /* ── Cursor personalizado ───────────────────────────────────── */
 
 function initCursor() {
+
   /* Só ativa em dispositivos com mouse */
   if (!window.matchMedia('(pointer: fine)').matches) return;
 
   const dot = document.getElementById('cursor-dot');
+
   if (!dot) return;
 
   dot.style.display = 'block';
 
-  let tx = 0, ty = 0, cx = 0, cy = 0;
+  let tx = 0,
+      ty = 0,
+      cx = 0,
+      cy = 0;
 
   document.addEventListener('mousemove', e => {
     tx = e.clientX;
@@ -199,7 +205,9 @@ function initCursor() {
   function loop() {
     cx += (tx - cx) * 0.18;
     cy += (ty - cy) * 0.18;
+
     dot.style.transform = `translate(${cx - 5}px, ${cy - 5}px)`;
+
     requestAnimationFrame(loop);
   }
 
@@ -214,7 +222,9 @@ function initCursor() {
 function initConfetti() {
   canvas = document.getElementById('confetti-canvas');
   ctx    = canvas.getContext('2d');
+
   resizeCanvas();
+
   window.addEventListener('resize', resizeCanvas);
 }
 
@@ -239,23 +249,35 @@ function newPiece() {
 }
 
 function tick() {
+
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  pieces = pieces.filter(p => p.life > 0.02 && p.y < canvas.height + 30);
+  pieces = pieces.filter(
+    p => p.life > 0.02 && p.y < canvas.height + 30
+  );
 
   pieces.forEach(p => {
+
     p.x     += p.vx;
     p.y     += p.vy;
     p.angle += p.spin;
-    p.vx    += (Math.random() - 0.5) * 0.15;
-    if (p.y > canvas.height * 0.7) p.life -= 0.025;
+
+    p.vx += (Math.random() - 0.5) * 0.15;
+
+    if (p.y > canvas.height * 0.7) {
+      p.life -= 0.025;
+    }
 
     ctx.save();
+
     ctx.globalAlpha = p.life;
     ctx.fillStyle   = p.color;
+
     ctx.translate(p.x, p.y);
     ctx.rotate(p.angle * Math.PI / 180);
+
     ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+
     ctx.restore();
   });
 
@@ -267,15 +289,29 @@ function tick() {
 }
 
 function launchConfetti() {
+
   if (raf) cancelAnimationFrame(raf);
+
   pieces = [];
 
-  [{ d: 0, n: 80 }, { d: 110, n: 50 }, { d: 260, n: 35 }].forEach(w => {
+  [
+    { d: 0,   n: 80 },
+    { d: 110, n: 50 },
+    { d: 260, n: 35 }
+  ].forEach(w => {
+
     setTimeout(() => {
-      for (let i = 0; i < w.n; i++) pieces.push(newPiece());
+      for (let i = 0; i < w.n; i++) {
+        pieces.push(newPiece());
+      }
     }, w.d);
+
   });
 
   raf = requestAnimationFrame(tick);
-  setTimeout(() => pieces.forEach(p => { p.life = 0; }), 4800);
-}
+
+  setTimeout(() => {
+    pieces.forEach(p => {
+      p.life = 0;
+    });
+  }, 4800);                                                                }
