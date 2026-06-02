@@ -26,20 +26,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.getElementById('display-name').textContent = clientName;
 
-  /* mensagem personalizada */
-  const birthdayMessage = document.getElementById('birthday-message');
+  /* mensagem personalizada do presente */
 
-  if (birthdayMessage) {
-    birthdayMessage.innerHTML = `
-      Parabéns, ${clientName} 🤍<br><br>
+const giftMessage = document.getElementById('gift-message');
 
-      Que teu novo ciclo venha leve,
-      bonito e cheio de coisas boas.<br><br>
+if (giftMessage) {
 
-      Você merece viver momentos que façam
-      seu coração sorrir de verdade ✨
-    `;
-  }
+  const customMsg =
+    new URLSearchParams(window.location.search).get('msg');
+
+  giftMessage.innerHTML = `
+    🎉💜 Dia delaaa! 💜🎉<br><br>
+
+    Parabéns, ${clientName}!<br><br>
+
+    ${
+      customMsg ||
+      'Que seu dia seja tão incrível quanto você. Que Deus continue te abençoando, guiando seus passos e enchendo sua vida de alegria, saúde e momentos especiais. ✨'
+    }<br><br>
+
+    Aproveita muito o seu dia! 🥳🤍
+  `;
+}
 
   setWhatsAppLink();
   initConfetti();
